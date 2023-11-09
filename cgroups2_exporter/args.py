@@ -21,7 +21,8 @@ class MetricsGroup(argclass.Group):
 
 class CgroupGroup(argclass.Group):
     path: Iterable[str] = argclass.Argument(
-        nargs=argclass.Nargs.ONE_OR_MORE, required=True,
+        nargs=argclass.Nargs.ONE_OR_MORE,
+        required=True,
     )
     root: Path = Path("/sys/fs/cgroup")
 
@@ -40,11 +41,13 @@ class TracerGroup(argclass.Group):
 
 class Parser(argclass.Parser):
     pool_size: int = argclass.Argument(
-        "-s", default=4,
+        "-s",
+        default=4,
         help="Thread pool size",
     )
     user: pwd.struct_passwd = argclass.Argument(
-        "-u", required=False,
+        "-u",
+        required=False,
         help="Change process UID",
         type=pwd.getpwnam,
     )

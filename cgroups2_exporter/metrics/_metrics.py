@@ -2,7 +2,6 @@ import threading
 from collections import defaultdict
 from typing import Dict, Iterable, NamedTuple, Union
 
-
 ValueType = Union[int, float]
 INF = float("inf")
 MINUS_INF = float("-inf")
@@ -13,12 +12,19 @@ class MetricBase:
     __slots__ = ("name", "label_names", "type", "help")
 
     def __init__(
-        self, *, name: str, labelnames: Iterable[str], help: str = None,
-        type: str = "gauge", namespace: str, subsystem: str, unit: str,
+        self,
+        *,
+        name: str,
+        labelnames: Iterable[str],
+        help: str = None,
+        type: str = "gauge",
+        namespace: str,
+        subsystem: str,
+        unit: str,
     ):
-        self.name = "_".join(
-            filter(None, (namespace, subsystem, name, unit))
-        ).replace(".", "_")
+        self.name = "_".join(filter(None, (namespace, subsystem, name, unit))).replace(
+            ".", "_"
+        )
         self.help = help
         self.type = type
         self.label_names = frozenset(labelnames)
@@ -42,7 +48,7 @@ class Metric(MetricBase):
                 continue
 
             lvalue = str(lvalue).replace('"', '\\"')
-            labels.append(f"{lname}=\"{lvalue}\"")
+            labels.append(f'{lname}="{lvalue}"')
 
         return Record(metric=self, labels=",".join(labels))
 
@@ -80,7 +86,9 @@ class Storage:
             for record, value in records.items():
                 if record.labels:
                     yield "%s{%s} %.3e\n" % (
-                        metric.name, record.labels, value,
+                        metric.name,
+                        record.labels,
+                        value,
                     )
                 else:
                     yield "%s %.3e\n" % (metric.name, value)

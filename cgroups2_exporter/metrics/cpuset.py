@@ -52,6 +52,4 @@ class CPUSetCount(MetricProviderBase):
             )
 
 
-COLLECTORS = (
-    CPUSetCount,
-)
+COLLECTORS = (CPUSetCount,)

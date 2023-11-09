@@ -9,13 +9,9 @@ from typing import Any, Iterable
 from aiochannel import Channel
 from aiomisc import threaded_iterable_separate
 from aiomisc.service.periodic import PeriodicService
-
-from cgroups_exporter.metrics import (
-    HANDLER_REGISTRY, CGroupTask, metrics_handler,
-)
+from cgroups_exporter.metrics import CGroupTask, HANDLER_REGISTRY, metrics_handler
 from cgroups_exporter.metrics.io import uptade_device_ids
 from cgroups_exporter.metrics.meminfo import meminfo
-
 
 log = logging.getLogger(__name__)
 
@@ -32,7 +28,6 @@ class Collector(PeriodicService):
     def resolve_paths(self):
         for path_glob in self.cgroup_paths:
             for path in glob.glob(path_glob, recursive=True):
-
                 if not os.path.isdir(path):
                     log.debug("Is not directory path %r skipping...", path)
                     continue
@@ -81,4 +76,3 @@ class Collector(PeriodicService):
 
     async def before_collect(self):
         await uptade_device_ids()
-

@@ -43,6 +43,4 @@ class Uptime(MetricProviderBase):
         )
 
 
-COLLECTORS = (
-    Uptime,
-)
+COLLECTORS = (Uptime,)
