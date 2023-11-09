@@ -1,7 +1,6 @@
 import logging
 
-from .base import CGroupTask, LimitBase, StatBase, UsageBase
-
+from .base import CGroupTask, IntProviderBase, PressureBase, StatBase
 
 log = logging.getLogger()
 
@@ -14,95 +13,45 @@ def memory_collector(task: CGroupTask):
             log.exception("Failed to collect %r", collector)
 
 
-class MemoryKernelMaxUsage(UsageBase):
-    FILENAME = "memory.kmem.max_usage_in_bytes"
-    METRIC = "kmem_max"
-    DOCUMENTATION = "Maximum kernel memory usage"
-
-
-class MemoryKernelTCPUsage(UsageBase):
-    FILENAME = "memory.kmem.tcp.usage_in_bytes"
-    METRIC = "kmem_tcp"
-    DOCUMENTATION = "Kernel TCP memory usage"
-
-
-class MemoryKernelTCPMaxUsage(UsageBase):
-    FILENAME = "memory.kmem.usage_in_bytes"
-    METRIC = "kmem"
-    DOCUMENTATION = "Maximum kernel TCP maximum memory usage"
-
-
-class MemoryMaxUsage(UsageBase):
-    FILENAME = "memory.max_usage_in_bytes"
-    METRIC = "max"
-    DOCUMENTATION = "Maximum memory usage"
-
-
-class MemorySwapMaxUsage(UsageBase):
-    FILENAME = "memory.memsw.max_usage_in_bytes"
-    METRIC = "swap_max"
-    DOCUMENTATION = "Maximum swap usage"
-
-
-class MemorySwapUsage(UsageBase):
-    FILENAME = "memory.memsw.usage_in_bytes"
-    METRIC = "swap"
-    DOCUMENTATION = "Swap usage"
-
-
-class MemoryUsage(UsageBase):
-    FILENAME = "memory.usage_in_bytes"
+class MemoryCurrentProvider(IntProviderBase):
+    FILENAME = "memory.current"
+    NAME = "current"
     METRIC = None
-    DOCUMENTATION = "Memory usage"
+    DOCUMENTATION = "The total amount of memory currently"
 
 
-class MemoryKernelLimit(LimitBase):
-    FILENAME = "memory.kmem.limit_in_bytes"
-    METRIC = "kmem"
-    DOCUMENTATION = "Memory kernel limit"
-
-
-class MemoryKernelTCPLimit(LimitBase):
-    FILENAME = "memory.kmem.tcp.limit_in_bytes"
-    METRIC = "kmem_tcp"
-    DOCUMENTATION = "Kernel TCP memory limit"
-
-
-class MemoryLimit(LimitBase):
-    FILENAME = "memory.limit_in_bytes"
+class MemorySwapCurrentProvider(IntProviderBase):
+    FILENAME = "memory.swap.current"
+    NAME = "swap_current"
     METRIC = None
-    DOCUMENTATION = "Memory limit"
+    DOCUMENTATION = "The total amount of swap currently"
 
 
-class MemorySwapLimit(LimitBase):
-    FILENAME = "memory.memsw.limit_in_bytes"
-    METRIC = "swap"
-    DOCUMENTATION = "Swap limit"
+class MemorySwapEventsProvider(StatBase):
+    STAT_FILE = "memory.swap.events"
+    DOCUMENTATION = "Memory swap events"
 
 
-class MemorySoftLimit(LimitBase):
-    FILENAME = "memory.soft_limit_in_bytes"
-    METRIC = "soft"
-    DOCUMENTATION = "Soft limit"
+class MemoryEventsProvider(StatBase):
+    STAT_FILE = "memory.events"
+    DOCUMENTATION = "Memory events"
 
 
 class MemoryStatProvider(StatBase):
     STAT_FILE = "memory.stat"
-    DOCUMENTATION = "memory statistic"
+    DOCUMENTATION = "Memory statistic"
+
+
+class MemoryPressure(PressureBase):
+    PRESSURE_FILE = "memory.pressure"
+    DOCUMENTATION = "Memory resource pressure"
 
 
 COLLECTORS = (
-    MemoryKernelMaxUsage,
-    MemoryKernelTCPUsage,
-    MemoryKernelTCPMaxUsage,
-    MemoryMaxUsage,
-    MemorySwapMaxUsage,
-    MemorySwapUsage,
-    MemoryUsage,
-    MemoryKernelLimit,
-    MemoryKernelTCPLimit,
-    MemoryLimit,
-    MemorySwapLimit,
-    MemorySoftLimit,
+    MemoryCurrentProvider,
+    MemorySwapCurrentProvider,
+    MemorySwapEventsProvider,
+    MemoryEventsProvider,
     MemoryStatProvider,
+    MemoryPressure,
 )

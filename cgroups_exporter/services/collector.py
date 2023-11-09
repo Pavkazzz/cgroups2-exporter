@@ -13,7 +13,7 @@ from aiomisc.service.periodic import PeriodicService
 from cgroups_exporter.metrics import (
     HANDLER_REGISTRY, CGroupTask, metrics_handler,
 )
-from cgroups_exporter.metrics.blkio import uptade_device_ids
+from cgroups_exporter.metrics.io import uptade_device_ids
 from cgroups_exporter.metrics.meminfo import meminfo
 
 
@@ -26,12 +26,7 @@ class Collector(PeriodicService):
     cgroup_paths: Iterable[str]
     max_workers: int = 8
 
-    groups = tuple(HANDLER_REGISTRY.keys())
-
-    SPLIT_EXP = re.compile(
-        r"^(?P<base>.*)/(?P<group>{0})/(?P<path>.*)/?$".format("|".join(groups)),
-
-    )
+    SPLIT_EXP = re.compile(r"^(?P<base>.*)/(?P<path>.*)/?$")
 
     @threaded_iterable_separate(max_size=1024)
     def resolve_paths(self):
@@ -51,12 +46,13 @@ class Collector(PeriodicService):
 
                 data = match.groupdict()
                 log.debug("Parsed %r", data)
-                yield CGroupTask(
-                    abspath=Path(path),
-                    base=Path(data["base"]),
-                    group=data["group"],
-                    path=Path(data["path"]),
-                )
+                for group in tuple(HANDLER_REGISTRY.keys()):
+                    yield CGroupTask(
+                        abspath=Path(path),
+                        base=Path(data["base"]),
+                        group=group,
+                        path=Path(data["path"]),
+                    )
 
     async def producer(self, channel: Channel):
         async for path in self.resolve_paths():

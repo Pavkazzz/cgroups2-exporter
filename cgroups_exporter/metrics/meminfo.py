@@ -9,7 +9,6 @@ from aiomisc import threaded
 
 from .base import gauge_factory
 
-
 log = logging.getLogger()
 
 

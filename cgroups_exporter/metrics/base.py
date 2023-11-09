@@ -1,6 +1,6 @@
 from functools import lru_cache
 from pathlib import Path
-from typing import NamedTuple, Optional
+from typing import NamedTuple
 
 from ._metrics import INF, Metric
 
