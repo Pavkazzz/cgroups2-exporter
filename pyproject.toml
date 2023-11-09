@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "cgroups-exporter"
-version = "0.8.7"
-description = "prometheus exporter for cgroups v1"
-authors = ["Dmitry Orlov <me@mosquito.su>"]
+name = "cgroups2-exporter"
+version = "2.0.0"
+description = "prometheus exporter for cgroups v2"
+authors = ["Dmitry Orlov <me@mosquito.su>", "Pavel Mosein <me@pavkazzz.ru>"]
 readme = "README.md"
 license = "Apache Software License"
-homepage = "https://github.com/mosquito/cgroups-exporter"
+homepage = "https://github.com/pavkazzz/cgroups2-exporter"
 classifiers = [
     "License :: OSI Approved :: Apache Software License",
     "Topic :: Software Development",
@@ -21,10 +21,11 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: Implementation :: CPython",
 ]
 packages = [
-    { include = "cgroups_exporter" },
+    { include = "cgroups2_exporter" },
 ]
 
 [tool.poetry.urls]
@@ -41,7 +42,7 @@ aiomisc = "^17.3"
 
 
 [tool.poetry.scripts]
-"cgroups-exporter" = "cgroups_exporter.__main__:main"
+"cgroups2-exporter" = "cgroups2_exporter.__main__:main"
 
 [build-system]
 requires = ["poetry-core"]
