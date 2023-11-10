@@ -2,7 +2,7 @@ from aiohttp.web import Application, Request, StreamResponse
 from aiomisc import threaded_iterable
 from aiomisc.service.aiohttp import AIOHTTPService
 
-from cgroups_exporter.metrics._metrics import STORAGE
+from cgroups2_exporter.metrics._metrics import STORAGE
 
 
 class MetricsAPI(AIOHTTPService):

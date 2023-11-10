@@ -5,19 +5,19 @@ from aiomisc import entrypoint
 from aiomisc.service import MemoryTracer, Profiler
 from aiomisc.service.sdwatchdog import SDWatchdogService
 from aiomisc_log import basic_config
-from cgroups_exporter.args import Parser
-from cgroups_exporter.services.collector import Collector
-from cgroups_exporter.services.metrics import MetricsAPI
+from cgroups2_exporter.args import Parser
+from cgroups2_exporter.services.collector import Collector
+from cgroups2_exporter.services.metrics import MetricsAPI
 
 
 def main():
     parser: Parser = Parser(
-        auto_env_var_prefix="CGROUPS_EXPORTER_",
-        description="croups exporter",
+        auto_env_var_prefix="CGROUPS2_EXPORTER_",
+        description="croups2 exporter",
         config_files=[
-            os.getenv("CGROUPS_EXPORTER_CONFIG", "cgroups-exporter.conf"),
-            "~/.cgroups-exporter.conf",
-            "/etc/cgroups-exporter.conf",
+            os.getenv("CGROUPS2_EXPORTER_CONFIG", "cgroups2-exporter.conf"),
+            "~/.cgroups2-exporter.conf",
+            "/etc/cgroups2-exporter.conf",
         ],
     )
 

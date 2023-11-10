@@ -9,9 +9,9 @@ from typing import Any, Iterable
 from aiochannel import Channel
 from aiomisc import threaded_iterable_separate
 from aiomisc.service.periodic import PeriodicService
-from cgroups_exporter.metrics import CGroupTask, HANDLER_REGISTRY, metrics_handler
-from cgroups_exporter.metrics.io import uptade_device_ids
-from cgroups_exporter.metrics.meminfo import meminfo
+from cgroups2_exporter.metrics import CGroupTask, HANDLER_REGISTRY, metrics_handler
+from cgroups2_exporter.metrics.io import uptade_device_ids
+from cgroups2_exporter.metrics.meminfo import meminfo
 
 log = logging.getLogger(__name__)
 
