@@ -93,7 +93,7 @@ class BlockIOBase(MetricProviderBase, ABC):
                         base_path=self.base_path,
                         path=self.path,
                         device=device,
-                    ).set(value)
+                    ).set(int(value))
 
 
 class IOStat(BlockIOBase):

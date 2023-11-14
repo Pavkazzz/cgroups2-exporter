@@ -35,7 +35,7 @@ class Record(NamedTuple):
     labels: str
 
     def set(self, value: ValueType) -> None:
-        STORAGE.add(self, float(value))
+        STORAGE.add(self, value)
 
 
 class Metric(MetricBase):
@@ -61,7 +61,6 @@ class Storage:
         self.lock = threading.Lock()
 
     def add(self, record: Record, value: ValueType):
-        value = float(value)
         metric = record.metric
         if metric in self.metrics and record in self.metrics[metric]:
             self.metrics[record.metric][record] = value
@@ -85,7 +84,7 @@ class Storage:
 
             for record, value in records.items():
                 if record.labels:
-                    yield "%s{%s} %.3e\n" % (
+                    yield "%s{%s} %.9e\n" % (
                         metric.name,
                         record.labels,
                         value,
