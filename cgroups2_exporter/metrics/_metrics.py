@@ -2,7 +2,6 @@ import threading
 from collections import defaultdict
 from typing import Dict, Iterable, NamedTuple, Union
 
-
 ValueType = Union[int, float]
 INF = float("inf")
 MINUS_INF = float("-inf")
@@ -13,12 +12,19 @@ class MetricBase:
     __slots__ = ("name", "label_names", "type", "help")
 
     def __init__(
-        self, *, name: str, labelnames: Iterable[str], help: str = None,
-        type: str = "gauge", namespace: str, subsystem: str, unit: str,
+        self,
+        *,
+        name: str,
+        labelnames: Iterable[str],
+        help: str = None,
+        type: str = "gauge",
+        namespace: str,
+        subsystem: str,
+        unit: str,
     ):
-        self.name = "_".join(
-            filter(None, (namespace, subsystem, name, unit))
-        ).replace(".", "_")
+        self.name = "_".join(filter(None, (namespace, subsystem, name, unit))).replace(
+            ".", "_"
+        )
         self.help = help
         self.type = type
         self.label_names = frozenset(labelnames)
@@ -29,7 +35,7 @@ class Record(NamedTuple):
     labels: str
 
     def set(self, value: ValueType) -> None:
-        STORAGE.add(self, float(value))
+        STORAGE.add(self, value)
 
 
 class Metric(MetricBase):
@@ -42,7 +48,7 @@ class Metric(MetricBase):
                 continue
 
             lvalue = str(lvalue).replace('"', '\\"')
-            labels.append(f"{lname}=\"{lvalue}\"")
+            labels.append(f'{lname}="{lvalue}"')
 
         return Record(metric=self, labels=",".join(labels))
 
@@ -55,7 +61,6 @@ class Storage:
         self.lock = threading.Lock()
 
     def add(self, record: Record, value: ValueType):
-        value = float(value)
         metric = record.metric
         if metric in self.metrics and record in self.metrics[metric]:
             self.metrics[record.metric][record] = value
@@ -79,8 +84,10 @@ class Storage:
 
             for record, value in records.items():
                 if record.labels:
-                    yield "%s{%s} %.3e\n" % (
-                        metric.name, record.labels, value,
+                    yield "%s{%s} %.9e\n" % (
+                        metric.name,
+                        record.labels,
+                        value,
                     )
                 else:
                     yield "%s %.3e\n" % (metric.name, value)

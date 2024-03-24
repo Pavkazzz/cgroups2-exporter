@@ -2,34 +2,17 @@ import logging
 import time
 from pathlib import Path
 
-from .base import CGroupTask, MetricProviderBase, PressureBase, gauge_factory
-from .cpu import CPUStat
-
+from .base import CGroupTask, MetricProviderBase, gauge_factory
 
 log = logging.getLogger()
 
 
-def unified_collector(task: CGroupTask):
+def uptime_collector(task: CGroupTask):
     for collector in COLLECTORS:
         try:
             collector(task)()
         except Exception:
             log.exception("Failed to collect %r", collector)
-
-
-class UnifiedCPUPressure(PressureBase):
-    PRESSURE_FILE = "cpu.pressure"
-    DOCUMENTATION = "CPU resource pressure"
-
-
-class UnifiedIOPressure(PressureBase):
-    PRESSURE_FILE = "io.pressure"
-    DOCUMENTATION = "IO resource pressure"
-
-
-class UnifiedMemoryPressure(PressureBase):
-    PRESSURE_FILE = "memory.pressure"
-    DOCUMENTATION = "Memory resource pressure"
 
 
 class Uptime(MetricProviderBase):
@@ -60,10 +43,4 @@ class Uptime(MetricProviderBase):
         )
 
 
-COLLECTORS = (
-    UnifiedCPUPressure,
-    UnifiedIOPressure,
-    UnifiedMemoryPressure,
-    CPUStat,
-    Uptime,
-)
+COLLECTORS = (Uptime,)

@@ -9,7 +9,6 @@ from aiomisc import threaded
 
 from .base import gauge_factory
 
-
 log = logging.getLogger()
 
 
@@ -61,7 +60,10 @@ class MemInfo:
             multiplier = 1024 ** self.SUFFIXES.index(suffix)
             documentation = f"{name} field from /proc/meminfo"
             yield (
-                snake_case(name), int(value) * multiplier, label, documentation,
+                snake_case(name),
+                int(value) * multiplier,
+                label,
+                documentation,
             )
 
     def __call__(self):
@@ -81,6 +83,4 @@ class MemInfo:
                     gauge_factory(*args).labels().set(value)
 
 
-COLLECTORS = (
-    MemInfo,
-)
+COLLECTORS = (MemInfo,)

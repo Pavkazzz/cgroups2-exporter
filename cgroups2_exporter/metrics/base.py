@@ -1,6 +1,6 @@
 from functools import lru_cache
 from pathlib import Path
-from typing import NamedTuple, Optional
+from typing import NamedTuple
 
 from ._metrics import INF, Metric
 
@@ -54,9 +54,13 @@ class IntProviderBase(MetricProviderBase):
         metric.labels(base_path=self.base_path, path=self.path).set(value)
 
 
-@lru_cache(2 ** 20)
+@lru_cache(2**20)
 def gauge_factory(
-    name: str, unit: str, group, documentation: str, labelnames=(),
+    name: str,
+    unit: str,
+    group,
+    documentation: str,
+    labelnames=(),
 ) -> Metric:
     return Metric(
         name=name,
@@ -92,8 +96,10 @@ class StatBase(MetricProviderBase):
                     "stat",
                     param,
                     self.task.group.replace(",", "_"),
-                    self.DOCUMENTATION + " ({!r} field from {!r} file)".format(
-                        param, self.STAT_FILE,
+                    self.DOCUMENTATION
+                    + " ({!r} field from {!r} file)".format(
+                        param,
+                        self.STAT_FILE,
                     ),
                     labelnames=("base_path", "path"),
                 )
